@@ -908,4 +908,5 @@ def monitor_data_flow(resume_file, job_description_path, evaluation_result, proc
 
 if __name__ == "__main__":
     # Start the Flask application
-    app.run(host='0.0.0.0', debug=True, port=8000)
+    port = int(os.environ.get('PORT', 8000))
+    app.run(host='0.0.0.0', debug=False, port=port)

@@ -102,7 +102,8 @@ def get_llm_with_fallback() -> ChatOpenAI:
         temperature=0.1,
         api_key=api_key,
         base_url=base_url,
-        max_tokens=1500,  # Reduced token limit to avoid credit issues
+        max_tokens=1000,  # Further reduced for memory efficiency
+        request_timeout=120,  # Add timeout
         model_kwargs={
             "response_format": {"type": "json_object"},
             "extra_headers": {
