@@ -277,24 +277,20 @@ DB_MAX_OVERFLOW=20
 - Database encryption and access controls
 - API key security and rotation
 
-### **Compliance**
+### **Features**
 - Bias detection and mitigation algorithms
 - Fair evaluation practices implementation
-- Data retention policies
-- Privacy protection measures
 
-## 🚀 Performance Optimization
+## 🚀 Performance Features
 
 ### **Database Optimization**
 - Indexed columns for fast queries
 - Optimized schema with proper relationships
 - Connection pooling for concurrent requests
-- Automatic cleanup of old data
 
 ### **AI Processing**
 - Batch processing for multiple resumes
 - Caching of job description analysis
-- Parallel processing where possible
 - Error handling and retry mechanisms
 
 ## 🧪 Testing
@@ -306,76 +302,30 @@ python -m pytest tests/
 
 # Integration tests
 python -m pytest tests/integration/
-
-# Load testing
-python tests/load_test.py
 ```
 
-## 📈 Monitoring & Analytics
+## 📈 Project Features
 
-### **System Metrics**
-- Processing time per resume
-- Accuracy rates and confidence scores
-- Error rates and failure analysis
-- Resource utilization
-
-### **Business Metrics**
-- Qualification rates by job type
-- Score distributions over time
-- Popular skills and requirements
-- Hiring funnel analytics
+### **Key Capabilities**
+- Multi-agent AI processing with CrewAI
+- Advanced resume parsing and analysis
+- Comprehensive scoring algorithm
+- Interview question generation
+- Real-time results dashboard
+- Export functionality (CSV, JSON, Excel)
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### **Development Setup**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+This is a personal portfolio project, but if you find any bugs or have suggestions, feel free to open an issue!
 
 ### **Code Standards**
 - PEP 8 compliance
 - Type hints for Python functions
 - Comprehensive docstrings
-- Unit test coverage > 80%
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-### **Documentation**
-- [API Documentation](docs/api.md)
-- [Configuration Guide](docs/configuration.md)
-- [Troubleshooting](docs/troubleshooting.md)
-
-### **Community**
-- [GitHub Issues](https://github.com/yourusername/ai-resume-evaluator/issues)
-- [Discussions](https://github.com/yourusername/ai-resume-evaluator/discussions)
-
-## 🗺️ Roadmap
-
-### **Version 2.0 (Q2 2024)**
-- [ ] Multi-language support
-- [ ] Advanced ML models
-- [ ] Real-time collaboration
-- [ ] Mobile application
-
-### **Version 2.1 (Q3 2024)**
-- [ ] Video interview analysis
-- [ ] Skill gap analysis
-- [ ] Automated scheduling
-- [ ] Advanced reporting
-
-### **Version 3.0 (Q4 2024)**
-- [ ] AI-powered job matching
-- [ ] Candidate sourcing
-- [ ] Predictive analytics
-- [ ] Enterprise integrations
 
 ## 🙏 Acknowledgments
 
@@ -383,10 +333,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **OpenRouter** for API access and infrastructure
 - **Flask Community** for the excellent web framework
 - **Supabase** for the powerful database platform
-- **Contributors** who helped improve this project
 
 ---
 
-**Made with ❤️ by the AI Resume Evaluator Team**
+**Made with ❤️ by [Your Name]**
 
-*Transforming recruitment with AI-powered insights*
+*Personal portfolio project showcasing AI and web development skills*
