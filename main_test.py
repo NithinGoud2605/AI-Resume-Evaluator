@@ -340,18 +340,35 @@ def process_evaluation_request():
     # Validate inputs
     retain_job_desc = 'retain_job_desc' in request.form
 
-    # Process job description
+    # Process job description - handle both file upload and text input
+    job_description_text = None
+    job_desc_path = None
+    
     if not retain_job_desc or not os.path.exists(session.get('job_description_file', '')):
+        # Check for text input first
+        job_desc_text = request.form.get('job_desc_text', '').strip()
         job_desc_file = request.files.get('job_desc')
-        if not job_desc_file or job_desc_file.filename == '':
-            raise ValueError("Job description file is required.")
-
-        job_desc_path = save_file(job_desc_file, app.config['UPLOAD_FOLDER'])
-        session['job_description_file'] = job_desc_path
-        session['file_name'] = job_desc_file.filename
-        logging.info(f"New job description uploaded: {job_desc_file.filename}")
+        
+        if job_desc_text and job_desc_file and job_desc_file.filename != '':
+            raise ValueError("Please provide either a job description file OR text, not both.")
+        
+        if job_desc_text:
+            # Use text input
+            job_description_text = job_desc_text
+            session['job_description_file'] = None
+            session['file_name'] = 'Text Input'
+            logging.info("Using job description from text input")
+        elif job_desc_file and job_desc_file.filename != '':
+            # Use file upload
+            job_desc_path = save_file(job_desc_file, app.config['UPLOAD_FOLDER'])
+            session['job_description_file'] = job_desc_path
+            session['file_name'] = job_desc_file.filename
+            logging.info(f"New job description uploaded: {job_desc_file.filename}")
+        else:
+            raise ValueError("Please provide either a job description file or enter job description text.")
     else:
         logging.info("Reusing existing job description.")
+        job_desc_path = session.get('job_description_file')
 
     # Process resume files
     resume_files = request.files.getlist('resumes')
@@ -371,8 +388,14 @@ def process_evaluation_request():
     clear_previous_results()
 
     # Extract job description text
-    job_description_path = session.get('job_description_file')
-    job_description = extract_text(job_description_path)
+    if job_description_text:
+        # Use text input directly
+        job_description = job_description_text
+        job_description_path = "Text Input"
+    else:
+        # Extract from file
+        job_description_path = session.get('job_description_file')
+        job_description = extract_text(job_description_path)
 
     # ===== CONSOLE LOGGING FOR DEBUGGING =====
     print("\n" + "="*80)

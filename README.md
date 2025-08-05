@@ -1,46 +1,40 @@
 # 🤖 AI Resume Evaluator
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![Flask](https://img.shields.io/badge/Flask-2.3+-green.svg)](https://flask.palletsprojects.com/)
-[![CrewAI](https://img.shields.io/badge/CrewAI-0.28+-orange.svg)](https://github.com/joaomdmoura/crewAI)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-purple.svg)](https://supabase.com/)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-
 > **Advanced AI-powered resume evaluation system with industry-standard scoring, comprehensive analysis, and detailed feedback for better hiring decisions.**
 
 ## 🎯 Overview
 
 The AI Resume Evaluator is a sophisticated web application that leverages multiple AI agents to analyze resumes against job descriptions, providing comprehensive evaluations with detailed scoring, interview questions, and actionable insights. Built with modern technologies and best practices, it's designed for HR professionals and hiring managers who need efficient, accurate, and bias-free candidate assessment.
 
-## ✨ Key Features
+## 🚀 How It Works
 
-### 🧠 **Advanced AI Analysis**
-- **Multi-Agent System**: 5 specialized AI agents working in sequence
-- **Industry-Standard Scoring**: Professional evaluation metrics used by Fortune 500 companies
-- **Intelligent Parsing**: Supports PDF, DOCX, and TXT resume formats
-- **Bias Detection**: Built-in safeguards against discriminatory evaluation
+### **Step-by-Step Process**
 
-### 📊 **Comprehensive Analytics**
-- **Real-time Dashboard**: Visual insights with charts and statistics
-- **Score Distribution Analysis**: Detailed breakdown of candidate performance
-- **Qualification Tracking**: Monitor qualified, not qualified, and overqualified candidates
-- **Performance Metrics**: Processing time, accuracy rates, and system statistics
+1. **Upload Job Description** 📋
+   - Upload a PDF, DOCX, or TXT file containing the job requirements
+   - Or paste the job description directly into the text area
+   - The system extracts and analyzes the requirements
 
-### 📋 **Professional Reporting**
-- **Detailed Evaluations**: Comprehensive candidate analysis with strengths and areas of concern
-- **Interview Questions**: Auto-generated technical, behavioral, and situational questions
-- **Export Capabilities**: CSV, JSON, and Excel export options
-- **Comparative Analysis**: Side-by-side candidate comparisons
+2. **Upload Resume Files** 📄
+   - Upload multiple resume files (up to 50 per batch)
+   - Supported formats: PDF, DOCX, TXT
+   - Drag & drop functionality available
 
-### 🔒 **Enterprise Features**
-- **Secure Processing**: Enterprise-grade data security and privacy
-- **Batch Processing**: Handle multiple resumes simultaneously
-- **Session Management**: Track evaluation sessions and history
-- **Database Optimization**: Advanced schema with indexing and performance tuning
+3. **AI Processing** 🤖
+   - **5 AI Agents** work sequentially to analyze each resume:
+     - **Resume Analyzer**: Extracts candidate information
+     - **Job Requirements Analyzer**: Parses job description
+     - **Advanced Evaluator**: Comprehensive candidate assessment
+     - **Interview Strategist**: Generates targeted questions
+     - **Quality Assurance**: Ensures accuracy and consistency
 
-## 🏗️ System Architecture
+4. **Results Dashboard** 📊
+   - View comprehensive results with analytics
+   - Individual candidate cards with detailed scores
+   - Filter and sort capabilities
+   - Export options for reports
 
-### **Agent Flow Overview**
+### **AI Agent Workflow**
 
 ```
 ┌─────────────────┐    ┌─────────────────────┐    ┌──────────────────┐
@@ -79,74 +73,9 @@ The AI Resume Evaluator is a sophisticated web application that leverages multip
                                                     ┌──────────────────┐
                                                     │ Database         │
                                                     │ Storage          │
-                                                    │ (Supabase/MySQL) │
+                                                    │ (Supabase)       │
                                                     └──────────────────┘
 ```
-
-### **Data Flow Architecture**
-
-```
-1. INPUT LAYER
-   ├── File Upload (Flask)
-   ├── Text Extraction (PyMuPDF/docx)
-   └── Session Management
-
-2. AI PROCESSING LAYER
-   ├── CrewAI Orchestration
-   ├── OpenRouter API Integration
-   ├── Agent Sequential Processing
-   └── JSON Output Validation
-
-3. DATA VALIDATION LAYER
-   ├── Schema Validation
-   ├── Cross-Agent Consistency
-   ├── Data Quality Checks
-   └── Error Recovery
-
-4. STORAGE LAYER
-   ├── Supabase (Primary)
-   ├── MySQL (Fallback)
-   ├── File System (Uploads)
-   └── Session Storage
-
-5. PRESENTATION LAYER
-   ├── Results Dashboard
-   ├── Export Functionality
-   ├── Real-time Monitoring
-   └── Error Reporting
-```
-
-## 🤖 AI Agents & Their Roles
-
-### **1. Resume Analyzer Agent**
-- **Role**: Senior Resume Analyst
-- **Goal**: Extract comprehensive information from resumes
-- **Output**: Structured JSON with candidate details
-- **Validation**: Name extraction, experience calculation, skills categorization
-
-### **2. Job Requirements Analyzer Agent**
-- **Role**: Job Requirements Specialist
-- **Goal**: Parse job descriptions into structured requirements
-- **Output**: Prioritized requirements (Critical/Important/Preferred)
-- **Validation**: Requirement completeness, priority classification
-
-### **3. Advanced Evaluator Agent**
-- **Role**: Senior Talent Evaluation Specialist
-- **Goal**: Comprehensive candidate assessment
-- **Output**: Detailed scoring and recommendations
-- **Validation**: Score consistency, bias detection, fairness checks
-
-### **4. Interview Strategist Agent**
-- **Role**: Interview Strategy Expert
-- **Goal**: Generate targeted interview questions
-- **Output**: Categorized interview questions and logistics
-- **Validation**: Question relevance, coverage completeness
-
-### **5. Quality Assurance Agent**
-- **Role**: Quality Assurance Specialist
-- **Goal**: Ensure evaluation consistency and accuracy
-- **Output**: Final validated evaluation
-- **Validation**: Schema compliance, data integrity, bias removal
 
 ## 🛠️ Technology Stack
 
@@ -164,7 +93,6 @@ The AI Resume Evaluator is a sophisticated web application that leverages multip
 
 ### **Database**
 - **Supabase (PostgreSQL)** - Primary database with real-time capabilities
-- **MySQL 8.0+** - Fallback database option
 - **SQLAlchemy** - Database ORM and connection management
 - **Connection Pooling** - Optimized database performance
 
@@ -179,17 +107,11 @@ The AI Resume Evaluator is a sophisticated web application that leverages multip
 - **Chart.js** - Data visualization and analytics
 - **Font Awesome** - Icon library for UI elements
 
-### **Deployment & Infrastructure**
-- **Docker** - Containerization support
-- **Environment Variables** - Secure configuration management
-- **Logging** - Comprehensive application monitoring
-- **Error Handling** - Robust error recovery mechanisms
-
 ## 📦 Installation & Setup
 
 ### **Prerequisites**
 - Python 3.10 or higher
-- Supabase account (recommended) or MySQL 8.0+
+- Supabase account (recommended)
 - OpenRouter API key(s)
 
 ### **Quick Setup**
@@ -291,6 +213,33 @@ The AI Resume Evaluator is a sophisticated web application that leverages multip
 - **Interview Questions**: Auto-generated relevant questions
 - **Recommendation Engine**: Hiring recommendations
 
+## 📊 Evaluation Methodology
+
+### **Scoring Algorithm**
+
+The system uses a weighted scoring approach:
+
+- **Experience (35%)**: Years and relevance of work experience
+- **Skills (25%)**: Technical and soft skills matching
+- **Education (15%)**: Degree relevance and academic achievements
+- **Achievements (15%)**: Quantifiable accomplishments and impact
+- **Cultural Fit (10%)**: Company and role alignment
+
+### **Score Ranges**
+
+- **90-100**: Exceptional fit, exceeds requirements
+- **80-89**: Strong fit, meets all critical requirements
+- **70-79**: Good fit, meets most requirements
+- **60-69**: Moderate fit, some gaps in requirements
+- **50-59**: Weak fit, significant gaps
+- **Below 50**: Poor fit, major misalignment
+
+### **Qualification Tags**
+
+- **QUALIFIED**: Score ≥ 75, meets job requirements
+- **NOT QUALIFIED**: Score < 75, significant gaps
+- **OVERQUALIFIED**: Exceeds requirements significantly
+
 ## 🔧 Configuration
 
 ### **AI Model Configuration**
@@ -320,33 +269,6 @@ DB_POOL_SIZE=10
 DB_MAX_OVERFLOW=20
 ```
 
-## 📊 Evaluation Methodology
-
-### **Scoring Algorithm**
-
-The system uses a weighted scoring approach:
-
-- **Experience (35%)**: Years and relevance of work experience
-- **Skills (25%)**: Technical and soft skills matching
-- **Education (15%)**: Degree relevance and academic achievements
-- **Achievements (15%)**: Quantifiable accomplishments and impact
-- **Cultural Fit (10%)**: Company and role alignment
-
-### **Score Ranges**
-
-- **90-100**: Exceptional fit, exceeds requirements
-- **80-89**: Strong fit, meets all critical requirements
-- **70-79**: Good fit, meets most requirements
-- **60-69**: Moderate fit, some gaps in requirements
-- **50-59**: Weak fit, significant gaps
-- **Below 50**: Poor fit, major misalignment
-
-### **Qualification Tags**
-
-- **QUALIFIED**: Score ≥ 75, meets job requirements
-- **NOT QUALIFIED**: Score < 75, significant gaps
-- **OVERQUALIFIED**: Exceeds requirements significantly
-
 ## 🔒 Security & Privacy
 
 ### **Data Protection**
@@ -360,12 +282,6 @@ The system uses a weighted scoring approach:
 - Fair evaluation practices implementation
 - Data retention policies
 - Privacy protection measures
-
-### **Best Practices**
-- Input validation and sanitization
-- SQL injection prevention
-- XSS protection
-- CSRF token validation
 
 ## 🚀 Performance Optimization
 
@@ -381,12 +297,6 @@ The system uses a weighted scoring approach:
 - Parallel processing where possible
 - Error handling and retry mechanisms
 
-### **Frontend Performance**
-- Lazy loading of results
-- Client-side filtering and sorting
-- Compressed assets and images
-- Progressive enhancement
-
 ## 🧪 Testing
 
 ### **Run Tests**
@@ -400,13 +310,6 @@ python -m pytest tests/integration/
 # Load testing
 python tests/load_test.py
 ```
-
-### **Test Coverage**
-- AI evaluation accuracy
-- Database operations
-- File processing
-- Export functionality
-- Security validation
 
 ## 📈 Monitoring & Analytics
 
@@ -453,12 +356,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### **Community**
 - [GitHub Issues](https://github.com/yourusername/ai-resume-evaluator/issues)
 - [Discussions](https://github.com/yourusername/ai-resume-evaluator/discussions)
-
-### **Professional Support**
-- Enterprise support available
-- Custom integrations
-- Training and consultation
-- SLA agreements
 
 ## 🗺️ Roadmap
 

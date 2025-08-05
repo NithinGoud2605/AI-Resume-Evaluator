@@ -40,29 +40,33 @@
             background: var(--background-color);
             color: var(--text-primary);
             line-height: 1.6;
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 1rem;
+        .main-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Header */
         .header {
             background: var(--surface-color);
             border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 0.75rem 0;
             box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
         }
 
         .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
         }
 
         .logo {
@@ -72,27 +76,27 @@
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.25rem;
+            font-size: 1rem;
             font-weight: 700;
         }
 
         .logo-text {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--primary-color);
         }
 
         .nav-actions {
             display: flex;
-            gap: 1rem;
+            gap: 0.75rem;
             align-items: center;
         }
 
@@ -100,12 +104,13 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            padding: 0.75rem 1.5rem;
+            padding: 0.5rem 1rem;
             background: var(--primary-color);
             color: white;
             text-decoration: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 600;
+            font-size: 0.875rem;
             transition: all 0.2s ease;
         }
 
@@ -115,97 +120,147 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            color: white;
-            padding: 4rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            opacity: 0.3;
+        .content-wrapper {
+            max-width: 1400px;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
+        /* Left Panel - Hero & Features */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            height: 100%;
+            justify-content: center;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        .hero-section {
+            text-align: left;
         }
 
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 2.25rem;
             font-weight: 800;
+            color: var(--text-primary);
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ffffff, #e0f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            line-height: 1.2;
         }
 
         .hero-subtitle {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
 
-        /* Main Content */
-        .main-content {
-            padding: 4rem 0;
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
 
-        .upload-section {
+        .feature-card {
+            background: var(--surface-color);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        /* Right Panel - Upload Section */
+        .right-panel {
             background: var(--surface-color);
             border-radius: 20px;
             box-shadow: var(--shadow-lg);
-            padding: 3rem;
-            margin-bottom: 3rem;
+            padding: 1.5rem;
+            height: fit-content;
+            max-height: 85vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border-color) transparent;
+        }
+
+        .upload-section {
+            width: 100%;
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.25rem;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .section-subtitle {
             color: var(--text-secondary);
             text-align: center;
-            margin-bottom: 3rem;
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 0.75rem;
+            font-size: 0.75rem;
         }
 
         .upload-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
         }
 
         .upload-card {
             background: var(--background-color);
-            border-radius: 15px;
-            padding: 2.5rem;
+            border-radius: 12px;
+            padding: 0.75rem;
             border: 2px dashed var(--border-color);
             transition: all 0.3s ease;
             text-align: center;
@@ -214,8 +269,8 @@
 
         .upload-card:hover {
             border-color: var(--primary-color);
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
         }
 
         .upload-card.dragover {
@@ -224,22 +279,23 @@
         }
 
         .upload-icon {
-            font-size: 3.5rem;
+            font-size: 1.5rem;
             color: var(--primary-color);
-            margin-bottom: 1.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .upload-title {
-            font-size: 1.5rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.25rem;
         }
 
         .upload-description {
             color: var(--text-secondary);
-            margin-bottom: 2rem;
-            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+            font-size: 0.75rem;
         }
 
         .file-input-wrapper {
@@ -260,25 +316,25 @@
             background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 0.75rem;
-            font-size: 1rem;
+            gap: 0.5rem;
+            font-size: 0.75rem;
         }
 
         .upload-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
 
         .file-list {
-            margin-top: 1.5rem;
-            max-height: 200px;
+            margin-top: 1rem;
+            max-height: 120px;
             overflow-y: auto;
         }
 
@@ -286,10 +342,10 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 1rem;
+            padding: 0.75rem;
             background: var(--surface-color);
-            border-radius: 8px;
-            margin-bottom: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
             border: 1px solid var(--border-color);
             box-shadow: var(--shadow-sm);
         }
@@ -297,11 +353,12 @@
         .file-name {
             font-weight: 500;
             color: var(--text-primary);
+            font-size: 0.875rem;
         }
 
         .file-size {
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.75rem;
         }
 
         .remove-file {
@@ -309,8 +366,8 @@
             color: white;
             border: none;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -323,29 +380,149 @@
             transform: scale(1.1);
         }
 
+        .retain-option {
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+
+        .form-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--background-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-check-input {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .input-option {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            background: var(--surface-color);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .option-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .option-header i {
+            color: var(--primary-color);
+        }
+
+        .text-input {
+            width: 100%;
+            height: 60px;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            resize: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .text-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .text-input:disabled {
+            background: var(--background-color);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+        }
+
+        .file-input:disabled {
+            cursor: not-allowed;
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Custom Scrollbar Styling */
+        .left-panel::-webkit-scrollbar,
+        .right-panel::-webkit-scrollbar,
+        .main-content::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .left-panel::-webkit-scrollbar-track,
+        .right-panel::-webkit-scrollbar-track,
+        .main-content::-webkit-scrollbar-track,
+        body::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .left-panel::-webkit-scrollbar-thumb,
+        .right-panel::-webkit-scrollbar-thumb,
+        .main-content::-webkit-scrollbar-thumb,
+        body::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .left-panel::-webkit-scrollbar-thumb:hover,
+        .right-panel::-webkit-scrollbar-thumb:hover,
+        .main-content::-webkit-scrollbar-thumb:hover,
+        body::-webkit-scrollbar-thumb:hover {
+            background: var(--text-secondary);
+        }
+
         .evaluate-section {
             text-align: center;
-            margin-top: 2rem;
+            margin-top: 1rem;
         }
 
         .evaluate-btn {
             background: linear-gradient(135deg, var(--success-color), #059669);
             color: white;
             border: none;
-            padding: 1.25rem 3rem;
-            border-radius: 15px;
+            padding: 1rem 2.5rem;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             box-shadow: var(--shadow-md);
         }
 
         .evaluate-btn:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
             box-shadow: var(--shadow-xl);
         }
 
@@ -357,10 +534,10 @@
 
         .loading-spinner {
             display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
@@ -372,18 +549,18 @@
 
         .progress-container {
             display: none;
-            margin-top: 2rem;
-            max-width: 500px;
+            margin-top: 1.5rem;
+            max-width: 400px;
             margin-left: auto;
             margin-right: auto;
         }
 
         .progress {
-            height: 10px;
-            border-radius: 10px;
+            height: 8px;
+            border-radius: 8px;
             background: var(--border-color);
             overflow: hidden;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
         }
 
         .progress-bar {
@@ -396,92 +573,19 @@
             text-align: center;
             color: var(--text-secondary);
             font-weight: 500;
-            font-size: 1rem;
-        }
-
-        .retain-option {
-            margin: 2rem 0;
-            text-align: center;
-        }
-
-        .form-check {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 1rem 2rem;
-            background: var(--background-color);
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-        }
-
-        .form-check-input {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--primary-color);
-        }
-
-        .form-check-label {
-            font-weight: 500;
-            color: var(--text-primary);
-            cursor: pointer;
-        }
-
-        /* Features Section */
-        .features-section {
-            background: var(--surface-color);
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            padding: 3rem;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .feature-card {
-            background: var(--background-color);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid var(--border-color);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 0.75rem;
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-            line-height: 1.6;
+            font-size: 0.875rem;
         }
 
         .alert {
-            border-radius: 12px;
+            border-radius: 8px;
             border: none;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1.5rem;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             font-weight: 500;
+            font-size: 0.875rem;
         }
 
         .alert-danger {
@@ -503,27 +607,55 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
             
-            .upload-grid {
+            .left-panel {
+                order: 2;
+                height: auto;
+            }
+            
+            .right-panel {
+                order: 1;
+                max-height: none;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0.5rem;
+            }
             
-            .upload-section,
-            .features-section {
-                padding: 2rem 1.5rem;
+            .content-wrapper {
+                gap: 0.5rem;
+            }
+            
+            .right-panel {
+                padding: 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 1.75rem;
             }
             
             .section-title {
-                font-size: 2rem;
+                font-size: 1.5rem;
             }
             
             .nav {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 0.5rem;
             }
         }
 
@@ -547,24 +679,24 @@
         }
 
         .floating-element:nth-child(1) {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             top: 20%;
             left: 10%;
             animation-delay: 0s;
         }
 
         .floating-element:nth-child(2) {
-            width: 150px;
-            height: 150px;
+            width: 120px;
+            height: 120px;
             top: 60%;
             right: 10%;
             animation-delay: 2s;
         }
 
         .floating-element:nth-child(3) {
-            width: 80px;
-            height: 80px;
+            width: 60px;
+            height: 60px;
             bottom: 20%;
             left: 20%;
             animation-delay: 4s;
@@ -572,7 +704,7 @@
 
         @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
+            50% { transform: translateY(-15px) rotate(180deg); }
         }
     </style>
 </head>
@@ -584,9 +716,9 @@
         <div class="floating-element"></div>
     </div>
 
-    <!-- Header -->
-    <header class="header">
-        <div class="container">
+    <div class="main-container">
+        <!-- Header -->
+        <header class="header">
             <nav class="nav">
                 <div class="logo">
                     <div class="logo-icon">
@@ -601,167 +733,171 @@
                     </a>
                 </div>
             </nav>
-        </div>
-    </header>
+        </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1 class="hero-title">AI-Powered Resume Evaluation</h1>
-                <p class="hero-subtitle">
-                    Advanced AI technology to assess resumes with industry-standard scoring, 
-                    comprehensive analysis, and detailed feedback for better hiring decisions.
-                </p>
-            </div>
-        </div>
-    </section>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Left Panel - Hero & Features -->
+                <div class="left-panel">
+                    <div class="hero-section">
+                        <h1 class="hero-title">AI-Powered Resume Evaluation</h1>
+                        <p class="hero-subtitle">
+                            Advanced AI technology to assess resumes with industry-standard scoring, 
+                            comprehensive analysis, and detailed feedback for better hiring decisions.
+                        </p>
+                    </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Upload Section -->
-            <section class="upload-section">
-                <h2 class="section-title">
-                    <i class="fas fa-upload"></i>
-                    Upload & Evaluate
-                </h2>
-                <p class="section-subtitle">
-                    Upload your job description and candidate resumes for comprehensive AI-powered evaluation
-                </p>
-
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
-                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }}"></i>
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-
-                <form method="POST" enctype="multipart/form-data" id="evaluationForm">
-                    <div class="upload-grid">
-                        <!-- Job Description Upload -->
-                        <div class="upload-card" id="jobDescCard">
-                            <i class="fas fa-file-alt upload-icon"></i>
-                            <h3 class="upload-title">Job Description</h3>
-                            <p class="upload-description">
-                                Upload the job description file (PDF, DOCX, or TXT)
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <i class="fas fa-brain feature-icon"></i>
+                            <h3 class="feature-title">AI-Powered Analysis</h3>
+                            <p class="feature-description">
+                                Advanced AI algorithms provide comprehensive resume evaluation with industry-standard scoring.
                             </p>
-                            <div class="file-input-wrapper">
-                                <input type="file" name="job_desc" id="jobDescInput" class="file-input" 
-                                       accept=".pdf,.docx,.txt" required>
-                                <button type="button" class="upload-btn" onclick="document.getElementById('jobDescInput').click()">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    Choose Job Description
-                                </button>
-                            </div>
-                            <div class="file-list" id="jobDescList"></div>
                         </div>
-
-                        <!-- Resume Upload -->
-                        <div class="upload-card" id="resumeCard">
-                            <i class="fas fa-file-pdf upload-icon"></i>
-                            <h3 class="upload-title">Candidate Resumes</h3>
-                            <p class="upload-description">
-                                Upload one or more resume files (PDF, DOCX, or TXT)
+                        <div class="feature-card">
+                            <i class="fas fa-chart-line feature-icon"></i>
+                            <h3 class="feature-title">Detailed Scoring</h3>
+                            <p class="feature-description">
+                                Get detailed scores across multiple categories: experience, skills, education, and cultural fit.
                             </p>
-                            <div class="file-input-wrapper">
-                                <input type="file" name="resumes" id="resumeInput" class="file-input" 
-                                       accept=".pdf,.docx,.txt" multiple required>
-                                <button type="button" class="upload-btn" onclick="document.getElementById('resumeInput').click()">
-                                    <i class="fas fa-cloud-upload-alt"></i>
-                                    Choose Resumes
-                                </button>
-                            </div>
-                            <div class="file-list" id="resumeList"></div>
                         </div>
-                    </div>
-
-                    <!-- Retain Job Description Option -->
-                    <div class="retain-option">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="retain_job_desc" id="retainJobDesc">
-                            <label class="form-check-label" for="retainJobDesc">
-                                <i class="fas fa-save"></i> Retain job description for future evaluations
-                            </label>
+                        <div class="feature-card">
+                            <i class="fas fa-comments feature-icon"></i>
+                            <h3 class="feature-title">Interview Questions</h3>
+                            <p class="feature-description">
+                                Receive tailored interview questions based on candidate qualifications and job requirements.
+                            </p>
                         </div>
-                    </div>
-
-                    <!-- Evaluate Button -->
-                    <div class="evaluate-section">
-                        <button type="submit" class="evaluate-btn" id="evaluateBtn">
-                            <i class="fas fa-play"></i>
-                            Start Evaluation
-                            <div class="loading-spinner" id="loadingSpinner"></div>
-                        </button>
-                    </div>
-
-                    <!-- Progress Bar -->
-                    <div class="progress-container" id="progressContainer">
-                        <div class="progress">
-                            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                        <div class="feature-card">
+                            <i class="fas fa-file-export feature-icon"></i>
+                            <h3 class="feature-title">Export Results</h3>
+                            <p class="feature-description">
+                                Export evaluation results in multiple formats including PDF and Excel for easy sharing.
+                            </p>
                         </div>
-                        <div class="status-text" id="statusText">Preparing evaluation...</div>
-                    </div>
-                </form>
-            </section>
-
-            <!-- Features Section -->
-            <section class="features-section">
-                <h2 class="section-title">
-                    <i class="fas fa-star"></i>
-                    Key Features
-                </h2>
-                <div class="features-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-brain feature-icon"></i>
-                        <h3 class="feature-title">AI-Powered Analysis</h3>
-                        <p class="feature-description">
-                            Advanced AI algorithms provide comprehensive resume evaluation with industry-standard scoring.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-chart-line feature-icon"></i>
-                        <h3 class="feature-title">Detailed Scoring</h3>
-                        <p class="feature-description">
-                            Get detailed scores across multiple categories: experience, skills, education, and cultural fit.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-comments feature-icon"></i>
-                        <h3 class="feature-title">Interview Questions</h3>
-                        <p class="feature-description">
-                            Receive tailored interview questions based on candidate qualifications and job requirements.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-file-export feature-icon"></i>
-                        <h3 class="feature-title">Export Results</h3>
-                        <p class="feature-description">
-                            Export evaluation results in multiple formats including PDF and Excel for easy sharing.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-shield-alt feature-icon"></i>
-                        <h3 class="feature-title">Secure Processing</h3>
-                        <p class="feature-description">
-                            Your data is processed securely with enterprise-grade encryption and privacy protection.
-                        </p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-bolt feature-icon"></i>
-                        <h3 class="feature-title">Fast Processing</h3>
-                        <p class="feature-description">
-                            Quick evaluation turnaround with our optimized AI processing pipeline.
-                        </p>
+                        <div class="feature-card">
+                            <i class="fas fa-shield-alt feature-icon"></i>
+                            <h3 class="feature-title">Secure Processing</h3>
+                            <p class="feature-description">
+                                Your data is processed securely with enterprise-grade encryption and privacy protection.
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <i class="fas fa-bolt feature-icon"></i>
+                            <h3 class="feature-title">Fast Processing</h3>
+                            <p class="feature-description">
+                                Quick evaluation turnaround with our optimized AI processing pipeline.
+                            </p>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
-    </main>
+
+                <!-- Right Panel - Upload Section -->
+                <div class="right-panel">
+                    <section class="upload-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-upload"></i>
+                            Upload & Evaluate
+                        </h2>
+                        <p class="section-subtitle">
+                            Upload your job description and candidate resumes for comprehensive AI-powered evaluation
+                        </p>
+
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                                        <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }}"></i>
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+
+                        <form method="POST" enctype="multipart/form-data" id="evaluationForm">
+                            <div class="upload-grid">
+                                <!-- Job Description Upload -->
+                                <div class="upload-card" id="jobDescCard">
+                                    <i class="fas fa-file-alt upload-icon"></i>
+                                    <h3 class="upload-title">Job Description</h3>
+                                    <p class="upload-description">
+                                        Upload a file or enter job description text
+                                    </p>
+                                    
+                                    <!-- File Upload Option -->
+                                    <div class="input-option">
+                                        <div class="option-header">
+                                            <i class="fas fa-file-upload"></i>
+                                            <span>Upload File</span>
+                                        </div>
+                                        <div class="file-input-wrapper">
+                                            <input type="file" name="job_desc" id="jobDescInput" class="file-input" 
+                                                   accept=".pdf,.docx,.txt">
+                                            <button type="button" class="upload-btn" onclick="document.getElementById('jobDescInput').click()">
+                                                <i class="fas fa-cloud-upload-alt"></i>
+                                                Choose File
+                                            </button>
+                                        </div>
+                                        <div class="file-list" id="jobDescList"></div>
+                                    </div>
+
+                                    <!-- Text Entry Option -->
+                                    <div class="input-option">
+                                        <div class="option-header">
+                                            <i class="fas fa-keyboard"></i>
+                                            <span>Enter Text</span>
+                                        </div>
+                                        <textarea name="job_desc_text" id="jobDescText" 
+                                                  placeholder="Paste or type the job description here..." 
+                                                  class="text-input"></textarea>
+                                    </div>
+                                </div>
+
+                                <!-- Resume Upload -->
+                                <div class="upload-card" id="resumeCard">
+                                    <i class="fas fa-file-pdf upload-icon"></i>
+                                    <h3 class="upload-title">Candidate Resumes</h3>
+                                    <p class="upload-description">
+                                        Upload one or more resume files (PDF, DOCX, or TXT)
+                                    </p>
+                                    <div class="file-input-wrapper">
+                                        <input type="file" name="resumes" id="resumeInput" class="file-input" 
+                                               accept=".pdf,.docx,.txt" multiple required>
+                                        <button type="button" class="upload-btn" onclick="document.getElementById('resumeInput').click()">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            Choose Resumes
+                                        </button>
+                                    </div>
+                                    <div class="file-list" id="resumeList"></div>
+                                </div>
+                            </div>
+
+
+
+                            <!-- Evaluate Button -->
+                            <div class="evaluate-section">
+                                <button type="submit" class="evaluate-btn" id="evaluateBtn">
+                                    <i class="fas fa-play"></i>
+                                    Start Evaluation
+                                    <div class="loading-spinner" id="loadingSpinner"></div>
+                                </button>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="progress-container" id="progressContainer">
+                                <div class="progress">
+                                    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                                </div>
+                                <div class="status-text" id="statusText">Preparing evaluation...</div>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script>
         // File upload handling
@@ -833,6 +969,73 @@
                 'resumeList', 
                 'resumeCard'
             );
+
+            // Form validation for job description
+            const evaluationForm = document.getElementById('evaluationForm');
+            const jobDescInput = document.getElementById('jobDescInput');
+            const jobDescText = document.getElementById('jobDescText');
+
+            // Remove required attribute from file input
+            jobDescInput.removeAttribute('required');
+
+            // Add custom validation
+            evaluationForm.addEventListener('submit', function(e) {
+                const hasFile = jobDescInput.files.length > 0;
+                const hasText = jobDescText.value.trim().length > 0;
+
+                if (!hasFile && !hasText) {
+                    e.preventDefault();
+                    alert('Please either upload a job description file or enter job description text.');
+                    return;
+                }
+
+                if (hasFile && hasText) {
+                    e.preventDefault();
+                    alert('Please choose either file upload OR text entry, not both.');
+                    return;
+                }
+
+                // Remove required attribute from file input since we handle validation above
+                jobDescInput.removeAttribute('required');
+            });
+
+            // Disable text input when file is selected and vice versa
+            jobDescInput.addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    jobDescText.disabled = true;
+                    jobDescText.value = '';
+                    jobDescText.style.opacity = '0.5';
+                    jobDescText.style.cursor = 'not-allowed';
+                    jobDescInput.style.opacity = '1';
+                    jobDescInput.style.cursor = 'pointer';
+                } else {
+                    jobDescText.disabled = false;
+                    jobDescText.style.opacity = '1';
+                    jobDescText.style.cursor = 'text';
+                    jobDescInput.style.opacity = '1';
+                    jobDescInput.style.cursor = 'pointer';
+                }
+            });
+
+            jobDescText.addEventListener('input', function() {
+                if (this.value.trim().length > 0) {
+                    jobDescInput.disabled = true;
+                    jobDescInput.style.opacity = '0.5';
+                    jobDescInput.style.cursor = 'not-allowed';
+                    jobDescText.style.opacity = '1';
+                    jobDescText.style.cursor = 'text';
+                    // Clear file input
+                    jobDescInput.value = '';
+                    const fileList = document.getElementById('jobDescList');
+                    fileList.innerHTML = '';
+                } else {
+                    jobDescInput.disabled = false;
+                    jobDescInput.style.opacity = '1';
+                    jobDescInput.style.cursor = 'pointer';
+                    jobDescText.style.opacity = '1';
+                    jobDescText.style.cursor = 'text';
+                }
+            });
 
             // Form submission handling
             const form = document.getElementById('evaluationForm');
