@@ -156,17 +156,17 @@ Advanced AI-powered resume evaluation system with industry-standard scoring and 
 
 ### **Environment Variables**
 ```bash
-# Database Configuration
+   # Database Configuration
 DATABASE_TYPE=supabase  # or mysql
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
-
-# AI Configuration
+   
+   # AI Configuration
 OPENROUTER_API_KEY_1=your_api_key_1
 OPENROUTER_API_KEY_2=your_api_key_2
 # ... up to OPENROUTER_API_KEY_5
-
-# Flask Configuration
+   
+   # Flask Configuration
 FLASK_SECRET_KEY=your_secret_key
 ```
 
@@ -179,14 +179,14 @@ FLASK_SECRET_KEY=your_secret_key
 ## 🚀 **Deployment**
 
 ### **Requirements**
-```bash
+   ```bash
 pip install -r requirements.txt
 ```
 
 ### **Running the Application**
-```bash
-python main_test.py
-```
+   ```bash
+   python main_test.py
+   ```
 
 ### **Access Points**
 - **Main Interface**: http://localhost:8000

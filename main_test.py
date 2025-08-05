@@ -40,6 +40,87 @@ def first_json_block(text: str) -> dict:
     json_str = text[start:end]
     return json.loads(json_str)
 
+def extract_complete_evaluation(raw_output: str) -> dict:
+    """
+    Extract the complete evaluation including interview questions from CrewAI output
+    """
+    try:
+        # First try the standard first_json_block approach
+        evaluation = first_json_block(raw_output)
+        
+        # Check if interview questions are present
+        if 'interview_questions' in evaluation and evaluation['interview_questions']:
+            return evaluation
+        
+        # If no interview questions, try to find them in the raw output
+        raw_str = str(raw_output)
+        
+        # Look for the complete evaluation JSON that includes interview_questions
+        # The CrewAI output might have multiple JSON blocks
+        json_blocks = []
+        start = 0
+        
+        while True:
+            start = raw_str.find('{', start)
+            if start == -1:
+                break
+                
+            brace_count = 0
+            end = start
+            
+            for i in range(start, len(raw_str)):
+                if raw_str[i] == '{':
+                    brace_count += 1
+                elif raw_str[i] == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        end = i + 1
+                        break
+            
+            if end > start:
+                try:
+                    json_str = raw_str[start:end]
+                    json_obj = json.loads(json_str)
+                    json_blocks.append(json_obj)
+                except json.JSONDecodeError:
+                    pass
+            
+            start = end
+        
+        # Find the block with the most complete evaluation data
+        best_block = None
+        best_score = 0
+        
+        for block in json_blocks:
+            score = 0
+            if 'candidate_name' in block:
+                score += 1
+            if 'overall_score' in block:
+                score += 1
+            if 'qualification_tag' in block:
+                score += 1
+            if 'interview_questions' in block and block['interview_questions']:
+                score += 5  # Give high weight to interview questions
+            if 'strengths' in block:
+                score += 1
+            if 'recommendations' in block:
+                score += 1
+            
+            if score > best_score:
+                best_score = score
+                best_block = block
+        
+        if best_block and best_score >= 3:
+            return best_block
+        
+        # If still no good block found, return the original evaluation
+        return evaluation
+        
+    except Exception as e:
+        logging.error(f"Error extracting complete evaluation: {e}")
+        # Fallback to original method
+        return first_json_block(raw_output)
+
 # Flask app configuration
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
@@ -135,15 +216,25 @@ def insert_results_into_db(results):
                 # List of lists format
                 for resume_list in results:
                     for resume in resume_list:
+                        # Debug: Check interview questions before Supabase insertion
+                        if resume.get('interview_questions'):
+                            logging.info(f"✅ Interview questions found for {resume.get('candidate_name')} before Supabase insertion")
+                            logging.info(f"📝 Interview questions: {resume['interview_questions']}")
+                        else:
+                            logging.warning(f"❌ No interview questions for {resume.get('candidate_name')} before Supabase insertion")
+                        
                         supabase_result = {
                             'candidate_name': resume.get('candidate_name'),
                             'overall_score': resume.get('overall_score'),
                             'qualification_tag': resume.get('qualification_tag'),  # Use new key name
                             'explanation': resume.get('recommendations'),   # Use recommendations field
                             'feedback': "Strengths: " + ", ".join(resume.get('strengths', [])),
-                            # 'interview_questions': resume.get('interview_questions', {}),  # Temporarily commented out
+                            'interview_questions': resume.get('interview_questions', {}),  # Include interview questions
                             'evaluated_at': datetime.datetime.now(datetime.timezone.utc).isoformat()
                         }
+                        
+                        # Debug: Check what's being inserted
+                        logging.info(f"🔍 Supabase result for {resume.get('candidate_name')}: interview_questions = {supabase_result.get('interview_questions')}")
                         # Store filename in explanation for now (we'll enhance this later)
                         if resume.get('resume_filename'):
                             supabase_result['explanation'] = f"[RESUME_FILE:{resume.get('resume_filename')}] {resume.get('recommendations', '')}"
@@ -151,15 +242,25 @@ def insert_results_into_db(results):
             else:
                 # Flat list format
                 for resume in results:
+                    # Debug: Check interview questions before Supabase insertion
+                    if resume.get('interview_questions'):
+                        logging.info(f"✅ Interview questions found for {resume.get('candidate_name')} before Supabase insertion (flat)")
+                        logging.info(f"📝 Interview questions: {resume['interview_questions']}")
+                    else:
+                        logging.warning(f"❌ No interview questions for {resume.get('candidate_name')} before Supabase insertion (flat)")
+                    
                     supabase_result = {
                         'candidate_name': resume.get('candidate_name'),
                         'overall_score': resume.get('overall_score'),
                         'qualification_tag': resume.get('qualification_tag'),  # Use new key name
                         'explanation': resume.get('recommendations'),   # Use recommendations field
                         'feedback': "Strengths: " + ", ".join(resume.get('strengths', [])),
-                        # 'interview_questions': resume.get('interview_questions', {}),  # Temporarily commented out
+                        'interview_questions': resume.get('interview_questions', {}),  # Include interview questions
                         'evaluated_at': datetime.datetime.now(datetime.timezone.utc).isoformat()
                     }
+                    
+                    # Debug: Check what's being inserted
+                    logging.info(f"🔍 Supabase result for {resume.get('candidate_name')} (flat): interview_questions = {supabase_result.get('interview_questions')}")
                     # Store filename in explanation for now (we'll enhance this later)
                     if resume.get('resume_filename'):
                         supabase_result['explanation'] = f"[RESUME_FILE:{resume.get('resume_filename')}] {resume.get('recommendations', '')}"
@@ -354,8 +455,22 @@ def process_evaluation_request():
                 # Fallback: try to get the last task's output
                 raw_json = str(result)
             
-            evaluation_dict = first_json_block(raw_json)
+            # Debug: Log the raw AI output
+            logging.info(f"🔍 Raw AI output for {candidate_name}:")
+            logging.info(f"Raw output type: {type(raw_json)}")
+            logging.info(f"Raw output length: {len(str(raw_json))}")
             
+            evaluation_dict = extract_complete_evaluation(raw_json)
+            
+            # Debug: Log what was parsed
+            logging.info(f"🔍 Parsed evaluation for {candidate_name}:")
+            logging.info(f"Parsed keys: {list(evaluation_dict.keys())}")
+            if 'interview_questions' in evaluation_dict and evaluation_dict['interview_questions']:
+                logging.info(f"✅ Interview questions found in parsed result")
+                logging.info(f"Interview question categories: {list(evaluation_dict['interview_questions'].keys())}")
+            else:
+                logging.warning(f"❌ No interview_questions found in parsed result")
+
             # Validate data flow consistency
             from ai_engine import validate_agent_data_flow
             validation_result = validate_agent_data_flow(
@@ -392,7 +507,7 @@ def process_evaluation_request():
                 else:
                     retry_raw_json = str(retry_result)
                 
-                retry_evaluation_dict = first_json_block(retry_raw_json)
+                retry_evaluation_dict = extract_complete_evaluation(retry_raw_json)
                 
                 # Check if retry also has placeholder
                 if retry_evaluation_dict["candidate_name"].lower() in placeholder_names:
@@ -416,6 +531,14 @@ def process_evaluation_request():
             parsed_result = evaluation_dict  # rename for clarity
             parsed_result["resume_filename"] = resume_file.filename
             
+            # Debug: Check interview questions before database insertion
+            if parsed_result.get('interview_questions'):
+                logging.info(f"✅ Interview questions found in parsed_result for {candidate_name}")
+                logging.info(f"📝 Interview questions data: {parsed_result['interview_questions']}")
+            else:
+                logging.warning(f"❌ No interview questions in parsed_result for {candidate_name}")
+                logging.warning(f"Available keys: {list(parsed_result.keys())}")
+
             # ===== CONSOLE LOGGING FOR AI EVALUATION RESULTS =====
             print("\n" + "="*80)
             print(f"🤖 AI EVALUATION RESULTS FOR: {candidate_name}")
@@ -470,7 +593,7 @@ def process_evaluation_request():
                     else:
                         raw_json = str(result)
                     
-                    evaluation_dict = first_json_block(raw_json)
+                    evaluation_dict = extract_complete_evaluation(raw_json)
                     
                     # Safety check for placeholder names
                     placeholder_names = {
@@ -600,6 +723,14 @@ def results():
         
         # Add some statistics
         stats = calculate_results_statistics(results_data)
+        
+        # Debug: Log interview questions data
+        for i, result in enumerate(results_data):
+            if result.get('interview_questions'):
+                logging.info(f"Result {i}: Interview questions found for {result['candidate_name']}")
+                logging.info(f"Interview questions: {result['interview_questions']}")
+            else:
+                logging.warning(f"Result {i}: No interview questions for {result['candidate_name']}")
         
         logging.info(f"Displaying {len(results_data)} evaluation results")
 

@@ -46,6 +46,10 @@ class SupabaseManager:
     def insert_evaluation_result(self, result_data: Dict[str, Any]) -> Optional[str]:
         """Insert a single evaluation result"""
         try:
+            # Debug: Log the incoming data
+            logger.info(f"Inserting evaluation result for {result_data.get('candidate_name', 'Unknown')}")
+            logger.info(f"Interview questions in result_data: {result_data.get('interview_questions')}")
+            
             # Convert any JSON fields to proper format
             if 'extracted_skills' in result_data and isinstance(result_data['extracted_skills'], str):
                 result_data['extracted_skills'] = json.loads(result_data['extracted_skills'])
@@ -56,6 +60,9 @@ class SupabaseManager:
             # Handle interview_questions field
             if 'interview_questions' in result_data and isinstance(result_data['interview_questions'], str):
                 result_data['interview_questions'] = json.loads(result_data['interview_questions'])
+            
+            # Debug: Log after processing
+            logger.info(f"Interview questions after processing: {result_data.get('interview_questions')}")
             
             # Ensure required fields are present
             required_fields = ['candidate_name', 'overall_score', 'qualification_tag']
