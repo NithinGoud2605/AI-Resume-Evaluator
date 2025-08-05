@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluation Results - ResumeAI Pro</title>
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--surface-color);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+        }
+
+        /* Stats Overview */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+        }
+
+        .stat-icon.qualified {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+
+        .stat-icon.not-qualified {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        }
+
+        .stat-icon.overqualified {
+            background: linear-gradient(135deg, var(--warning-color), #d97706);
+        }
+
+        .stat-icon.total {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            color: var(--success-color);
+            margin-top: 0.25rem;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Filters */
+        .filters {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .filters-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--surface-color);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        /* Results Grid */
+        .results-section {
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--background-color);
+            border-radius: 8px;
+            padding: 0.25rem;
+        }
+
+        .view-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .view-btn.active {
+            background: var(--surface-color);
+            color: var(--primary-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .candidate-card {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .candidate-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .candidate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .candidate-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .candidate-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .score-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            position: relative;
+        }
+
+        .score-circle.excellent {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+        }
+
+        .score-circle.good {
+            background: linear-gradient(135deg, var(--accent-color), #0891b2);
+        }
+
+        .score-circle.fair {
+            background: linear-gradient(135deg, var(--warning-color), #d97706);
+        }
+
+        .score-circle.poor {
+            background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        }
+
+        .candidate-tag {
+            padding: 0.375rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tag-qualified {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .tag-not-qualified {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .tag-overqualified {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .candidate-details {
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.875rem;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .candidate-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            background: var(--surface-color);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--surface-color);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            line-height: 1.6;
+        }
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-section-content {
+            color: var(--text-secondary);
+        }
+
+        /* Export Options */
+        .export-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .export-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow-lg);
+            min-width: 200px;
+            z-index: 100;
+        }
+
+        .export-menu.show {
+            display: block;
+        }
+
+        .export-option {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: none;
+            text-align: left;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .export-option:hover {
+            background: var(--background-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <span class="logo-text">ResumeAI Pro</span>
+                </div>
+                <div class="nav-actions">
+                    <div class="export-dropdown">
+                        <button class="btn btn-secondary" onclick="toggleExportMenu()">
+                            <i class="fas fa-download"></i>
+                            Export
+                        </button>
+                        <div class="export-menu" id="exportMenu">
+                            <button class="export-option" onclick="exportToPDF()">
+                                <i class="fas fa-file-pdf"></i> Export as PDF
+                            </button>
+                            <button class="export-option" onclick="exportToExcel()">
+                                <i class="fas fa-file-excel"></i> Export to Excel
+                            </button>
+                            <button class="export-option" onclick="exportToCSV()">
+                                <i class="fas fa-file-csv"></i> Export as CSV
+                            </button>
+                        </div>
+                    </div>
+                    <a href="/" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Evaluation
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header fade-in">
+                <h1 class="page-title">Evaluation Results</h1>
+                <p class="page-subtitle">AI-powered analysis of {{ results|length }} candidate{{ 's' if results|length != 1 else '' }}</p>
+            </div>
+
+            {% if error %}
+            <div class="alert alert-error fade-in">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <!-- Stats Overview -->
+            <div class="stats-grid fade-in">
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Total Candidates</div>
+                        <div class="stat-icon total">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ results|length }}</div>
+                    <div class="stat-change">+{{ results|length }} this session</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Qualified</div>
+                        <div class="stat-icon qualified">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ results|selectattr('tag', 'equalto', 'QUALIFIED')|list|length }}</div>
+                    <div class="stat-change">{{ ((results|selectattr('tag', 'equalto', 'QUALIFIED')|list|length / results|length * 100) if results|length > 0 else 0)|round(1) }}% of total</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Not Qualified</div>
+                        <div class="stat-icon not-qualified">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ results|selectattr('tag', 'equalto', 'NOT QUALIFIED')|list|length }}</div>
+                    <div class="stat-change">{{ ((results|selectattr('tag', 'equalto', 'NOT QUALIFIED')|list|length / results|length * 100) if results|length > 0 else 0)|round(1) }}% of total</div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-header">
+                        <div class="stat-title">Overqualified</div>
+                        <div class="stat-icon overqualified">
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="stat-value">{{ results|selectattr('tag', 'equalto', 'OVERQUALIFIED')|list|length }}</div>
+                    <div class="stat-change">{{ ((results|selectattr('tag', 'equalto', 'OVERQUALIFIED')|list|length / results|length * 100) if results|length > 0 else 0)|round(1) }}% of total</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section fade-in">
+                <div class="chart-card">
+                    <h3 class="chart-title">Score Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="scoreChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <h3 class="chart-title">Qualification Status</h3>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="filters fade-in">
+                <div class="filters-header">
+                    <h3 class="filters-title">Filter & Sort</h3>
+                    <button class="btn btn-secondary" onclick="resetFilters()">
+                        <i class="fas fa-refresh"></i>
+                        Reset
+                    </button>
+                </div>
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Status</label>
+                        <select class="filter-select" id="statusFilter" onchange="applyFilters()">
+                            <option value="">All Statuses</option>
+                            <option value="QUALIFIED">Qualified</option>
+                            <option value="NOT QUALIFIED">Not Qualified</option>
+                            <option value="OVERQUALIFIED">Overqualified</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Score Range</label>
+                        <select class="filter-select" id="scoreFilter" onchange="applyFilters()">
+                            <option value="">All Scores</option>
+                            <option value="90-100">90-100 (Excellent)</option>
+                            <option value="75-89">75-89 (Good)</option>
+                            <option value="50-74">50-74 (Fair)</option>
+                            <option value="0-49">0-49 (Poor)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Sort By</label>
+                        <select class="filter-select" id="sortFilter" onchange="applyFilters()">
+                            <option value="score-desc">Score (High to Low)</option>
+                            <option value="score-asc">Score (Low to High)</option>
+                            <option value="name-asc">Name (A to Z)</option>
+                            <option value="name-desc">Name (Z to A)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div class="results-section fade-in">
+                <div class="results-header">
+                    <h3 class="results-title">Candidate Results</h3>
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="switchView('grid')">
+                            <i class="fas fa-th-large"></i>
+                        </button>
+                        <button class="view-btn" onclick="switchView('list')">
+                            <i class="fas fa-list"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-grid" id="resultsContainer">
+                    {% for result in results %}
+                    <div class="candidate-card slide-in" data-score="{{ result.overall_score }}" data-tag="{{ result.tag }}" data-name="{{ result.candidate_name }}">
+                        <div class="candidate-header">
+                            <div>
+                                <div class="candidate-name">{{ result.candidate_name }}</div>
+                                <div class="candidate-tag tag-{{ result.tag.lower().replace(' ', '-') }}">
+                                    {{ result.tag }}
+                                </div>
+                            </div>
+                            <div class="candidate-score">
+                                <div class="score-circle {{ 'excellent' if result.overall_score|int >= 90 else 'good' if result.overall_score|int >= 75 else 'fair' if result.overall_score|int >= 50 else 'poor' }}">
+                                    {{ result.overall_score }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="candidate-details">
+                            <div class="detail-item">
+                                <span class="detail-label">Overall Score</span>
+                                <span class="detail-value">{{ result.overall_score }}/100</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Status</span>
+                                <span class="detail-value">{{ result.tag or result.qualification_tag }}</span>
+                            </div>
+                            {% if result.evaluated_at %}
+                            <div class="detail-item">
+                                <span class="detail-label">Evaluated</span>
+                                <span class="detail-value">{{ result.evaluated_at[:10] if result.evaluated_at else 'N/A' }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="candidate-actions">
+                            <button class="action-btn" onclick="viewDetails('{{ loop.index }}')">
+                                <i class="fas fa-eye"></i>
+                                View Details
+                            </button>
+                            <button class="action-btn" onclick="viewResume('{{ result.candidate_name }}')">
+                                <i class="fas fa-file-pdf"></i>
+                                View Resume
+                            </button>
+                            <button class="action-btn" onclick="compareCandidate('{{ result.candidate_name }}')">
+                                <i class="fas fa-balance-scale"></i>
+                                Compare
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal for Candidate Details -->
+    <div class="modal" id="candidateModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Candidate Details</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store results data for JavaScript processing
+        const resultsData = {{ results|tojson }};
+        let filteredResults = [...resultsData];
+
+        // Initialize charts
+        function initializeCharts() {
+            // Score Distribution Chart
+            const scoreCtx = document.getElementById('scoreChart').getContext('2d');
+            const scoreRanges = {
+                '90-100': resultsData.filter(r => r.overall_score >= 90).length,
+                '75-89': resultsData.filter(r => r.overall_score >= 75 && r.overall_score < 90).length,
+                '50-74': resultsData.filter(r => r.overall_score >= 50 && r.overall_score < 75).length,
+                '0-49': resultsData.filter(r => r.overall_score < 50).length
+            };
+
+            new Chart(scoreCtx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(scoreRanges),
+                    datasets: [{
+                        label: 'Number of Candidates',
+                        data: Object.values(scoreRanges),
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(6, 182, 212, 0.8)',
+                            'rgba(245, 158, 11, 0.8)',
+                            'rgba(239, 68, 68, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgb(16, 185, 129)',
+                            'rgb(6, 182, 212)',
+                            'rgb(245, 158, 11)',
+                            'rgb(239, 68, 68)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Status Distribution Chart
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            const statusCounts = {
+                'QUALIFIED': resultsData.filter(r => (r.tag || r.qualification_tag) === 'QUALIFIED').length,
+                'NOT QUALIFIED': resultsData.filter(r => (r.tag || r.qualification_tag) === 'NOT QUALIFIED').length,
+                'OVERQUALIFIED': resultsData.filter(r => (r.tag || r.qualification_tag) === 'OVERQUALIFIED').length
+            };
+
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(statusCounts),
+                    datasets: [{
+                        data: Object.values(statusCounts),
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(245, 158, 11, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgb(16, 185, 129)',
+                            'rgb(239, 68, 68)',
+                            'rgb(245, 158, 11)'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Filter and sort functions
+        function applyFilters() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            const scoreFilter = document.getElementById('scoreFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+
+            filteredResults = resultsData.filter(result => {
+                // Status filter
+                if (statusFilter && result.tag !== statusFilter) return false;
+
+                // Score filter
+                if (scoreFilter) {
+                    const [min, max] = scoreFilter.split('-').map(Number);
+                    if (result.overall_score < min || result.overall_score > max) return false;
+                }
+
+                return true;
+            });
+
+            // Sort results
+            const [sortBy, sortOrder] = sortFilter.split('-');
+            filteredResults.sort((a, b) => {
+                let comparison = 0;
+                if (sortBy === 'score') {
+                    comparison = a.overall_score - b.overall_score;
+                } else if (sortBy === 'name') {
+                    comparison = a.candidate_name.localeCompare(b.candidate_name);
+                }
+                return sortOrder === 'desc' ? -comparison : comparison;
+            });
+
+            renderResults();
+        }
+
+        function resetFilters() {
+            document.getElementById('statusFilter').value = '';
+            document.getElementById('scoreFilter').value = '';
+            document.getElementById('sortFilter').value = 'score-desc';
+            filteredResults = [...resultsData];
+            renderResults();
+        }
+
+        function renderResults() {
+            const container = document.getElementById('resultsContainer');
+            container.innerHTML = '';
+
+            filteredResults.forEach((result, index) => {
+                const card = createCandidateCard(result, index);
+                container.appendChild(card);
+            });
+        }
+
+        function createCandidateCard(result, index) {
+            const card = document.createElement('div');
+            card.className = 'candidate-card slide-in';
+            card.setAttribute('data-score', result.overall_score);
+            card.setAttribute('data-tag', result.tag);
+            card.setAttribute('data-name', result.candidate_name);
+
+            const scoreClass = result.overall_score >= 90 ? 'excellent' : 
+                              result.overall_score >= 75 ? 'good' : 
+                              result.overall_score >= 50 ? 'fair' : 'poor';
+
+            const tagClass = result.tag.toLowerCase().replace(' ', '-');
+
+            card.innerHTML = `
+                <div class="candidate-header">
+                    <div>
+                        <div class="candidate-name">${result.candidate_name}</div>
+                        <div class="candidate-tag tag-${tagClass}">
+                            ${result.tag}
+                        </div>
+                    </div>
+                    <div class="candidate-score">
+                        <div class="score-circle ${scoreClass}">
+                            ${result.overall_score}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="candidate-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Overall Score</span>
+                        <span class="detail-value">${result.overall_score}/100</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Status</span>
+                        <span class="detail-value">${result.tag}</span>
+                    </div>
+                </div>
+
+                <div class="candidate-actions">
+                    <button class="action-btn" onclick="viewDetails(${index})">
+                        <i class="fas fa-eye"></i>
+                        View Details
+                    </button>
+                    <button class="action-btn" onclick="compareCandidate('${result.candidate_name}')">
+                        <i class="fas fa-balance-scale"></i>
+                        Compare
+                    </button>
+                </div>
+            `;
+
+            return card;
+        }
+
+        // Modal functions
+        function viewDetails(index) {
+            const result = filteredResults[index];
+            
+            // Debug: Log the result data to see interview questions
+            console.log('Result data:', result);
+            console.log('Interview questions:', result.interview_questions);
+            
+            document.getElementById('modalTitle').textContent = `${result.candidate_name} - Detailed Evaluation`;
+            
+            // Get the qualification tag (handle both formats)
+            const qualificationTag = result.tag || result.qualification_tag || 'Unknown';
+            const evaluatedDate = result.evaluated_at ? new Date(result.evaluated_at).toLocaleDateString() : 'N/A';
+            
+            // Determine score color and description
+            let scoreClass = 'poor';
+            let scoreDescription = 'Needs Improvement';
+            if (result.overall_score >= 90) {
+                scoreClass = 'excellent';
+                scoreDescription = 'Excellent Match';
+            } else if (result.overall_score >= 75) {
+                scoreClass = 'good';
+                scoreDescription = 'Good Match';
+            } else if (result.overall_score >= 50) {
+                scoreClass = 'fair';
+                scoreDescription = 'Fair Match';
+            }
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <i class="fas fa-user-check" style="margin-right: 0.5rem;"></i>
+                        Overall Assessment
+                    </div>
+                    <div class="modal-section-content">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <div class="score-circle ${scoreClass}" style="width: 80px; height: 80px; font-size: 1.25rem;">
+                                ${result.overall_score}
+                            </div>
+                            <div>
+                                <div style="font-size: 1.125rem; font-weight: 600; color: var(--text-primary);">${scoreDescription}</div>
+                                <div style="color: var(--text-secondary); margin: 0.25rem 0;">Status: ${qualificationTag}</div>
+                                <div style="color: var(--text-secondary); font-size: 0.875rem;">Evaluated: ${evaluatedDate}</div>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-top: 1rem; padding: 1rem; background: var(--background-color); border-radius: 8px;">
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color);">${result.overall_score}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Overall Score</div>
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--success-color);">
+                                    ${qualificationTag === 'QUALIFIED' ? '✓' : qualificationTag === 'NOT QUALIFIED' ? '✗' : '?'}
+                                </div>
+                                <div style="font-size: 0.875rem; color: var(--text-secondary);">Status</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <i class="fas fa-clipboard-list" style="margin-right: 0.5rem;"></i>
+                        Detailed Analysis
+                    </div>
+                    <div class="modal-section-content">
+                        <div style="background: var(--background-color); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--primary-color); line-height: 1.6;">
+                            ${result.explanation || 'No detailed explanation available.'}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <i class="fas fa-lightbulb" style="margin-right: 0.5rem;"></i>
+                        Feedback & Recommendations
+                    </div>
+                    <div class="modal-section-content">
+                        <div style="background: var(--background-color); padding: 1rem; border-radius: 8px; border-left: 4px solid var(--success-color); line-height: 1.6;">
+                            ${result.feedback || 'No specific feedback available.'}
+                        </div>
+                    </div>
+                </div>
+
+                ${result.interview_questions ? `
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <i class="fas fa-question-circle" style="margin-right: 0.5rem;"></i>
+                        Interview Questions
+                    </div>
+                    <div class="modal-section-content">
+                        ${result.interview_questions.technical_questions && result.interview_questions.technical_questions.length > 0 ? `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: var(--primary-color);">
+                                <i class="fas fa-code"></i> Technical Questions:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(37, 99, 235, 0.1); border-radius: 6px;">
+                                ${result.interview_questions.technical_questions.map(q => `• ${q}`).join('<br>')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${result.interview_questions.behavioral_questions && result.interview_questions.behavioral_questions.length > 0 ? `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: var(--accent-color);">
+                                <i class="fas fa-users"></i> Behavioral Questions:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(6, 182, 212, 0.1); border-radius: 6px;">
+                                ${result.interview_questions.behavioral_questions.map(q => `• ${q}`).join('<br>')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${result.interview_questions.situational_questions && result.interview_questions.situational_questions.length > 0 ? `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: var(--warning-color);">
+                                <i class="fas fa-lightbulb"></i> Situational Questions:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-radius: 6px;">
+                                ${result.interview_questions.situational_questions.map(q => `• ${q}`).join('<br>')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${result.interview_questions.cultural_fit_questions && result.interview_questions.cultural_fit_questions.length > 0 ? `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: var(--success-color);">
+                                <i class="fas fa-heart"></i> Cultural Fit Questions:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
+                                ${result.interview_questions.cultural_fit_questions.map(q => `• ${q}`).join('<br>')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${result.interview_questions.gap_assessment_questions && result.interview_questions.gap_assessment_questions.length > 0 ? `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: var(--danger-color);">
+                                <i class="fas fa-exclamation-triangle"></i> Gap Assessment Questions:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(239, 68, 68, 0.1); border-radius: 6px;">
+                                ${result.interview_questions.gap_assessment_questions.map(q => `• ${q}`).join('<br>')}
+                            </div>
+                        </div>
+                        ` : ''}
+                        
+                        ${result.interview_questions.interview_duration || result.interview_questions.panel_composition ? `
+                        <div style="margin-top: 1rem; padding: 1rem; background: var(--background-color); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                            <strong style="color: var(--primary-color);">Interview Logistics:</strong><br>
+                            ${result.interview_questions.interview_duration ? `<strong>Duration:</strong> ${result.interview_questions.interview_duration}<br>` : ''}
+                            ${result.interview_questions.panel_composition ? `<strong>Panel:</strong> ${result.interview_questions.panel_composition}<br>` : ''}
+                            ${result.interview_questions.evaluation_criteria ? `<strong>Evaluation Criteria:</strong> ${result.interview_questions.evaluation_criteria}` : ''}
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${result.strengths || result.weaknesses ? `
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <i class="fas fa-balance-scale" style="margin-right: 0.5rem;"></i>
+                        Strengths & Areas for Improvement
+                    </div>
+                    <div class="modal-section-content">
+                        ${result.strengths ? `
+                        <div style="margin-bottom: 1rem;">
+                            <strong style="color: var(--success-color);">
+                                <i class="fas fa-check-circle"></i> Strengths:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: 6px;">
+                                ${result.strengths}
+                            </div>
+                        </div>
+                        ` : ''}
+                        ${result.weaknesses ? `
+                        <div>
+                            <strong style="color: var(--warning-color);">
+                                <i class="fas fa-exclamation-triangle"></i> Areas for Improvement:
+                            </strong>
+                            <div style="margin-top: 0.5rem; padding: 0.75rem; background: rgba(245, 158, 11, 0.1); border-radius: 6px;">
+                                ${result.weaknesses}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                <div class="modal-section">
+                    <div class="modal-section-title">
+                        <i class="fas fa-tools" style="margin-right: 0.5rem;"></i>
+                        Actions
+                    </div>
+                    <div class="modal-section-content">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="action-btn" onclick="exportCandidateReport('${result.candidate_name}')" style="flex: 1; min-width: 120px; padding: 0.75rem;">
+                                <i class="fas fa-file-pdf"></i> Export Report
+                            </button>
+                            <button class="action-btn" onclick="compareCandidate('${result.candidate_name}')" style="flex: 1; min-width: 120px; padding: 0.75rem;">
+                                <i class="fas fa-balance-scale"></i> Compare
+                            </button>
+                            <button class="action-btn" onclick="scheduleInterview('${result.candidate_name}')" style="flex: 1; min-width: 120px; padding: 0.75rem;">
+                                <i class="fas fa-calendar-plus"></i> Interview
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('candidateModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('candidateModal').style.display = 'none';
+        }
+
+        function compareCandidate(candidateName) {
+            // Implement candidate comparison functionality
+            alert(`Compare functionality for ${candidateName} - Coming soon!`);
+        }
+
+        function exportCandidateReport(candidateName) {
+            // Export individual candidate report
+            const candidate = resultsData.find(r => r.candidate_name === candidateName);
+            if (candidate) {
+                // Create a temporary form to trigger the export
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/export_candidate_report';
+                form.style.display = 'none';
+                
+                const input = document.createElement('input');
+                input.name = 'candidate_data';
+                input.value = JSON.stringify(candidate);
+                form.appendChild(input);
+                
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+            }
+        }
+
+        function scheduleInterview(candidateName) {
+            // Schedule interview functionality
+            const candidate = resultsData.find(r => r.candidate_name === candidateName);
+            if (candidate) {
+                const message = `Schedule interview for ${candidateName}:\n\n` +
+                              `Score: ${candidate.overall_score}/100\n` +
+                              `Status: ${candidate.tag || candidate.qualification_tag}\n\n` +
+                              `This feature will integrate with your calendar system.`;
+                alert(message);
+            }
+        }
+
+        function viewResume(candidateName) {
+            // Extract resume filename from explanation or construct from candidate name
+            const candidate = resultsData.find(r => r.candidate_name === candidateName);
+            if (candidate) {
+                let resumeFilename = null;
+                
+                // Try to extract filename from explanation
+                if (candidate.explanation && candidate.explanation.includes('[RESUME_FILE:')) {
+                    const match = candidate.explanation.match(/\[RESUME_FILE:([^\]]+)\]/);
+                    if (match) {
+                        resumeFilename = match[1];
+                    }
+                }
+                
+                // Fallback: try common extensions
+                if (!resumeFilename) {
+                    const commonExtensions = ['.pdf', '.docx', '.doc'];
+                    for (const ext of commonExtensions) {
+                        const testFilename = candidateName + ext;
+                        // We'll try the first extension as default
+                        resumeFilename = candidateName + '.pdf';
+                        break;
+                    }
+                }
+                
+                if (resumeFilename) {
+                    // Open resume in new tab
+                    const resumeUrl = `/view_resume/${encodeURIComponent(resumeFilename)}`;
+                    window.open(resumeUrl, '_blank');
+                } else {
+                    alert('Resume file not found. Please ensure the resume file is available.');
+                }
+            }
+        }
+
+        // View toggle
+        function switchView(viewType) {
+            const buttons = document.querySelectorAll('.view-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const container = document.getElementById('resultsContainer');
+            if (viewType === 'list') {
+                container.style.gridTemplateColumns = '1fr';
+            } else {
+                container.style.gridTemplateColumns = 'repeat(auto-fill, minmax(400px, 1fr))';
+            }
+        }
+
+        // Export functions
+        function toggleExportMenu() {
+            const menu = document.getElementById('exportMenu');
+            menu.classList.toggle('show');
+        }
+
+        function exportToPDF() {
+            // Implement PDF export
+            alert('PDF export functionality - Coming soon!');
+            toggleExportMenu();
+        }
+
+        function exportToExcel() {
+            // Implement Excel export
+            alert('Excel export functionality - Coming soon!');
+            toggleExportMenu();
+        }
+
+        function exportToCSV() {
+            // Implement CSV export
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Candidate Name,Overall Score,Tag,Explanation,Feedback\n"
+                + resultsData.map(r => `"${r.candidate_name}","${r.overall_score}","${r.tag}","${r.explanation.replace(/"/g, '""')}","${r.feedback.replace(/"/g, '""')}"`).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "resume_evaluation_results.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            toggleExportMenu();
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('candidateModal');
+            const exportMenu = document.getElementById('exportMenu');
+            
+            if (event.target === modal) {
+                closeModal();
+            }
+            
+            if (!event.target.closest('.export-dropdown')) {
+                exportMenu.classList.remove('show');
+            }
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            applyFilters(); // Initial render
+        });
+    </script>
+</body>
+</html>

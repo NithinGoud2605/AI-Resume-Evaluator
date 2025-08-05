@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResumeAI Pro - Advanced Resume Evaluation</title>
+    
+    <!-- External Libraries -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #64748b;
+            --accent-color: #06b6d4;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --surface-color: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--background-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        .header {
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #e0f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .upload-section {
+            background: var(--surface-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .upload-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-card {
+            background: var(--background-color);
+            border-radius: 15px;
+            padding: 2.5rem;
+            border: 2px dashed var(--border-color);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .upload-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .upload-card.dragover {
+            border-color: var(--success-color);
+            background-color: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-icon {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .upload-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .upload-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .file-input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .upload-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .file-list {
+            margin-top: 1.5rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--surface-color);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .file-size {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .remove-file {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .remove-file:hover {
+            transform: scale(1.1);
+        }
+
+        .evaluate-section {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .evaluate-btn {
+            background: linear-gradient(135deg, var(--success-color), #059669);
+            color: white;
+            border: none;
+            padding: 1.25rem 3rem;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .evaluate-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .evaluate-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .progress-container {
+            display: none;
+            margin-top: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 10px;
+            background: var(--border-color);
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transition: width 0.3s ease;
+            height: 100%;
+        }
+
+        .status-text {
+            text-align: center;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .retain-option {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .form-check {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 2rem;
+            background: var(--background-color);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--primary-color);
+        }
+
+        .form-check-label {
+            font-weight: 500;
+            color: var(--text-primary);
+            cursor: pointer;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: var(--surface-color);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--background-color);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-info {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .upload-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .upload-section,
+            .features-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* Floating Elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(37, 99, 235, 0.05);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Background Elements -->
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <span class="logo-text">ResumeAI Pro</span>
+                </div>
+                <div class="nav-actions">
+                    <a href="/results" class="nav-link">
+                        <i class="fas fa-chart-bar"></i>
+                        View Results
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">AI-Powered Resume Evaluation</h1>
+                <p class="hero-subtitle">
+                    Advanced AI technology to assess resumes with industry-standard scoring, 
+                    comprehensive analysis, and detailed feedback for better hiring decisions.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <h2 class="section-title">
+                    <i class="fas fa-upload"></i>
+                    Upload & Evaluate
+                </h2>
+                <p class="section-subtitle">
+                    Upload your job description and candidate resumes for comprehensive AI-powered evaluation
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ 'danger' if category == 'error' else category }}">
+                                <i class="fas fa-{{ 'exclamation-triangle' if category == 'error' else 'info-circle' }}"></i>
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form method="POST" enctype="multipart/form-data" id="evaluationForm">
+                    <div class="upload-grid">
+                        <!-- Job Description Upload -->
+                        <div class="upload-card" id="jobDescCard">
+                            <i class="fas fa-file-alt upload-icon"></i>
+                            <h3 class="upload-title">Job Description</h3>
+                            <p class="upload-description">
+                                Upload the job description file (PDF, DOCX, or TXT)
+                            </p>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="job_desc" id="jobDescInput" class="file-input" 
+                                       accept=".pdf,.docx,.txt" required>
+                                <button type="button" class="upload-btn" onclick="document.getElementById('jobDescInput').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    Choose Job Description
+                                </button>
+                            </div>
+                            <div class="file-list" id="jobDescList"></div>
+                        </div>
+
+                        <!-- Resume Upload -->
+                        <div class="upload-card" id="resumeCard">
+                            <i class="fas fa-file-pdf upload-icon"></i>
+                            <h3 class="upload-title">Candidate Resumes</h3>
+                            <p class="upload-description">
+                                Upload one or more resume files (PDF, DOCX, or TXT)
+                            </p>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="resumes" id="resumeInput" class="file-input" 
+                                       accept=".pdf,.docx,.txt" multiple required>
+                                <button type="button" class="upload-btn" onclick="document.getElementById('resumeInput').click()">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    Choose Resumes
+                                </button>
+                            </div>
+                            <div class="file-list" id="resumeList"></div>
+                        </div>
+                    </div>
+
+                    <!-- Retain Job Description Option -->
+                    <div class="retain-option">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="retain_job_desc" id="retainJobDesc">
+                            <label class="form-check-label" for="retainJobDesc">
+                                <i class="fas fa-save"></i> Retain job description for future evaluations
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Evaluate Button -->
+                    <div class="evaluate-section">
+                        <button type="submit" class="evaluate-btn" id="evaluateBtn">
+                            <i class="fas fa-play"></i>
+                            Start Evaluation
+                            <div class="loading-spinner" id="loadingSpinner"></div>
+                        </button>
+                    </div>
+
+                    <!-- Progress Bar -->
+                    <div class="progress-container" id="progressContainer">
+                        <div class="progress">
+                            <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                        </div>
+                        <div class="status-text" id="statusText">Preparing evaluation...</div>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <h2 class="section-title">
+                    <i class="fas fa-star"></i>
+                    Key Features
+                </h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-brain feature-icon"></i>
+                        <h3 class="feature-title">AI-Powered Analysis</h3>
+                        <p class="feature-description">
+                            Advanced AI algorithms provide comprehensive resume evaluation with industry-standard scoring.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h3 class="feature-title">Detailed Scoring</h3>
+                        <p class="feature-description">
+                            Get detailed scores across multiple categories: experience, skills, education, and cultural fit.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-comments feature-icon"></i>
+                        <h3 class="feature-title">Interview Questions</h3>
+                        <p class="feature-description">
+                            Receive tailored interview questions based on candidate qualifications and job requirements.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-file-export feature-icon"></i>
+                        <h3 class="feature-title">Export Results</h3>
+                        <p class="feature-description">
+                            Export evaluation results in multiple formats including PDF and Excel for easy sharing.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt feature-icon"></i>
+                        <h3 class="feature-title">Secure Processing</h3>
+                        <p class="feature-description">
+                            Your data is processed securely with enterprise-grade encryption and privacy protection.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-bolt feature-icon"></i>
+                        <h3 class="feature-title">Fast Processing</h3>
+                        <p class="feature-description">
+                            Quick evaluation turnaround with our optimized AI processing pipeline.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // File upload handling
+        function handleFileUpload(input, listId, cardId) {
+            const fileList = document.getElementById(listId);
+            const card = document.getElementById(cardId);
+            
+            input.addEventListener('change', function(e) {
+                fileList.innerHTML = '';
+                const files = Array.from(e.target.files);
+                
+                files.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <div>
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${formatFileSize(file.size)}</div>
+                        </div>
+                        <button type="button" class="remove-file" onclick="removeFile(this, ${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    fileList.appendChild(fileItem);
+                });
+            });
+
+            // Drag and drop functionality
+            card.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                card.classList.add('dragover');
+            });
+
+            card.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                card.classList.remove('dragover');
+            });
+
+            card.addEventListener('drop', function(e) {
+                e.preventDefault();
+                card.classList.remove('dragover');
+                input.files = e.dataTransfer.files;
+                input.dispatchEvent(new Event('change'));
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function removeFile(button, index) {
+            const fileItem = button.parentElement;
+            fileItem.remove();
+        }
+
+        // Initialize file upload handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            handleFileUpload(
+                document.getElementById('jobDescInput'), 
+                'jobDescList', 
+                'jobDescCard'
+            );
+            handleFileUpload(
+                document.getElementById('resumeInput'), 
+                'resumeList', 
+                'resumeCard'
+            );
+
+            // Form submission handling
+            const form = document.getElementById('evaluationForm');
+            const evaluateBtn = document.getElementById('evaluateBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const statusText = document.getElementById('statusText');
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                evaluateBtn.disabled = true;
+                loadingSpinner.style.display = 'inline-block';
+                progressContainer.style.display = 'block';
+                
+                // Simulate progress
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    progressBar.style.width = progress + '%';
+                    
+                    if (progress < 30) {
+                        statusText.textContent = 'Analyzing job description...';
+                    } else if (progress < 60) {
+                        statusText.textContent = 'Processing resumes...';
+                    } else if (progress < 90) {
+                        statusText.textContent = 'Generating evaluation...';
+                    }
+                }, 500);
+
+                // Submit form
+                const formData = new FormData(form);
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => {
+                    clearInterval(progressInterval);
+                    progressBar.style.width = '100%';
+                    statusText.textContent = 'Evaluation complete!';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/results';
+                    }, 1000);
+                })
+                .catch(error => {
+                    clearInterval(progressInterval);
+                    console.error('Error:', error);
+                    alert('An error occurred during evaluation. Please try again.');
+                    
+                    // Reset button state
+                    evaluateBtn.disabled = false;
+                    loadingSpinner.style.display = 'none';
+                    progressContainer.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html> 
