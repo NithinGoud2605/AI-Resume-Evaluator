@@ -1,4 +1,40 @@
-hr_sol_new 
+# Environment variables
 .env
-__pycache__
-uploads
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Uploaded files (but keep .gitkeep)
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+logs/*
+!logs/.gitkeep
+
+# Exports
+exports/*
+!exports/.gitkeep
+
+# Backups
+backups/*
+!backups/.gitkeep
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
