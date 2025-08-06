@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>ResumeAI Pro - Advanced Resume Evaluation</title>
     
     <!-- External Libraries -->
@@ -40,13 +40,14 @@
             background: var(--background-color);
             color: var(--text-primary);
             line-height: 1.6;
-            height: 100vh;
-            overflow-y: auto;
+            min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .main-container {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -58,6 +59,9 @@
             padding: 0.75rem 0;
             box-shadow: var(--shadow-sm);
             flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .nav {
@@ -112,6 +116,7 @@
             font-weight: 600;
             font-size: 0.875rem;
             transition: all 0.2s ease;
+            white-space: nowrap;
         }
 
         .nav-link:hover {
@@ -187,6 +192,7 @@
             padding: 1rem;
             border: 1px solid var(--border-color);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .feature-card:hover {
@@ -265,6 +271,7 @@
             transition: all 0.3s ease;
             text-align: center;
             position: relative;
+            cursor: pointer;
         }
 
         .upload-card:hover {
@@ -325,6 +332,8 @@
             align-items: center;
             gap: 0.5rem;
             font-size: 0.75rem;
+            min-height: 44px;
+            touch-action: manipulation;
         }
 
         .upload-btn:hover {
@@ -354,6 +363,7 @@
             font-weight: 500;
             color: var(--text-primary);
             font-size: 0.875rem;
+            word-break: break-word;
         }
 
         .file-size {
@@ -374,6 +384,9 @@
             cursor: pointer;
             font-size: 0.75rem;
             transition: all 0.2s ease;
+            min-width: 44px;
+            min-height: 44px;
+            touch-action: manipulation;
         }
 
         .remove-file:hover {
@@ -393,6 +406,7 @@
             background: var(--background-color);
             border-radius: 8px;
             border: 1px solid var(--border-color);
+            cursor: pointer;
         }
 
         .form-check-input {
@@ -519,6 +533,8 @@
             align-items: center;
             gap: 0.75rem;
             box-shadow: var(--shadow-md);
+            min-height: 60px;
+            touch-action: manipulation;
         }
 
         .evaluate-btn:hover {
@@ -606,59 +622,6 @@
             border-left: 4px solid var(--primary-color);
         }
 
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .content-wrapper {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .left-panel {
-                order: 2;
-                height: auto;
-            }
-            
-            .right-panel {
-                order: 1;
-                max-height: none;
-            }
-            
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                padding: 0.5rem;
-            }
-            
-            .content-wrapper {
-                gap: 0.5rem;
-            }
-            
-            .right-panel {
-                padding: 1.5rem;
-            }
-            
-            .hero-title {
-                font-size: 1.75rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .nav {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-        }
-
         /* Floating Elements */
         .floating-elements {
             position: fixed;
@@ -706,6 +669,237 @@
             0%, 100% { transform: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-15px) rotate(180deg); }
         }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                gap: 1.5rem;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .content-wrapper {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .left-panel {
+                order: 2;
+                height: auto;
+            }
+            
+            .right-panel {
+                order: 1;
+                max-height: none;
+            }
+            
+            .hero-title {
+                font-size: 1.875rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .content-wrapper {
+                gap: 0.5rem;
+            }
+            
+            .right-panel {
+                padding: 1rem;
+                border-radius: 16px;
+            }
+            
+            .hero-title {
+                font-size: 1.75rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.125rem;
+            }
+            
+            .nav {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .nav-link {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .feature-card {
+                padding: 0.875rem;
+            }
+            
+            .upload-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+            }
+            
+            .evaluate-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 1rem;
+            }
+            
+            .floating-elements {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0.25rem;
+            }
+            
+            .right-panel {
+                padding: 0.75rem;
+                border-radius: 12px;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.875rem;
+            }
+            
+            .section-title {
+                font-size: 1rem;
+            }
+            
+            .upload-card {
+                padding: 0.5rem;
+            }
+            
+            .upload-title {
+                font-size: 0.875rem;
+            }
+            
+            .upload-description {
+                font-size: 0.7rem;
+            }
+            
+            .feature-card {
+                padding: 0.75rem;
+            }
+            
+            .feature-title {
+                font-size: 0.8rem;
+            }
+            
+            .feature-description {
+                font-size: 0.7rem;
+            }
+            
+            .logo-text {
+                font-size: 1rem;
+            }
+            
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .hero-title {
+                font-size: 1.25rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .section-title {
+                font-size: 0.875rem;
+            }
+            
+            .upload-btn {
+                font-size: 0.7rem;
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .evaluate-btn {
+                font-size: 0.875rem;
+                padding: 0.875rem;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .upload-card:hover,
+            .feature-card:hover,
+            .evaluate-btn:hover,
+            .nav-link:hover {
+                transform: none;
+            }
+            
+            .upload-card:active,
+            .feature-card:active {
+                transform: scale(0.98);
+            }
+            
+            .evaluate-btn:active,
+            .nav-link:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --border-color: #000000;
+                --text-secondary: #000000;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            .floating-elements {
+                display: none;
+            }
+        }
+
+
     </style>
 </head>
 <body>
@@ -873,8 +1067,6 @@
                                     <div class="file-list" id="resumeList"></div>
                                 </div>
                             </div>
-
-
 
                             <!-- Evaluate Button -->
                             <div class="evaluate-section">

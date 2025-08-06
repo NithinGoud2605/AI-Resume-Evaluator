@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Evaluation Results - ResumeAI Pro</title>
     
     <!-- External Libraries -->
@@ -43,13 +43,14 @@
             background: var(--background-color);
             color: var(--text-primary);
             line-height: 1.6;
-            height: 100vh;
-            overflow-y: auto;
+            min-height: 100vh;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         .main-container {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -121,6 +122,8 @@
             align-items: center;
             gap: 0.5rem;
             text-decoration: none;
+            min-height: 44px;
+            touch-action: manipulation;
         }
 
         .btn-primary {
@@ -563,6 +566,8 @@
             cursor: pointer;
             transition: all 0.2s;
             font-size: 0.875rem;
+            min-height: 44px;
+            touch-action: manipulation;
         }
 
         .action-btn:hover {
@@ -680,7 +685,21 @@
             background: var(--text-secondary);
         }
 
-        /* Responsive Design */
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .content-wrapper {
+                gap: 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 1024px) {
             .content-wrapper {
                 grid-template-columns: 1fr;
@@ -708,6 +727,27 @@
         }
 
         @media (max-width: 768px) {
+            .main-content {
+                padding: 0.5rem;
+            }
+            
+            .content-wrapper {
+                gap: 0.5rem;
+            }
+            
+            .right-panel {
+                padding: 1rem;
+                border-radius: 16px;
+            }
+            
+            .page-title {
+                font-size: 1.25rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.875rem;
+            }
+            
             .charts-section {
                 grid-template-columns: 1fr;
             }
@@ -728,7 +768,169 @@
                 flex-direction: column;
                 gap: 0.5rem;
             }
+            
+            .nav-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+                min-height: 44px;
+                touch-action: manipulation;
+            }
+            
+            .candidate-card {
+                padding: 1rem;
+            }
+            
+            .score-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 0.875rem;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 1rem;
+            }
         }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 0.25rem;
+            }
+            
+            .right-panel {
+                padding: 0.75rem;
+                border-radius: 12px;
+            }
+            
+            .page-title {
+                font-size: 1.125rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.8rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .stat-card {
+                padding: 0.75rem;
+            }
+            
+            .stat-value {
+                font-size: 1.25rem;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .candidate-card {
+                padding: 0.75rem;
+            }
+            
+            .candidate-name {
+                font-size: 1rem;
+            }
+            
+            .score-circle {
+                width: 45px;
+                height: 45px;
+                font-size: 0.8rem;
+            }
+            
+            .logo-text {
+                font-size: 1rem;
+            }
+            
+            .logo-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .page-title {
+                font-size: 1rem;
+            }
+            
+            .page-subtitle {
+                font-size: 0.75rem;
+            }
+            
+            .stat-card {
+                padding: 0.5rem;
+            }
+            
+            .stat-value {
+                font-size: 1.125rem;
+            }
+            
+            .chart-container {
+                height: 200px;
+            }
+            
+            .candidate-card {
+                padding: 0.5rem;
+            }
+            
+            .candidate-name {
+                font-size: 0.875rem;
+            }
+            
+            .score-circle {
+                width: 40px;
+                height: 40px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Touch-friendly improvements */
+        @media (hover: none) and (pointer: coarse) {
+            .candidate-card:hover,
+            .feature-card:hover,
+            .btn:hover,
+            .action-btn:hover {
+                transform: none;
+            }
+            
+            .candidate-card:active,
+            .feature-card:active {
+                transform: scale(0.98);
+            }
+            
+            .btn:active,
+            .action-btn:active {
+                transform: scale(0.95);
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --border-color: #000000;
+                --text-secondary: #000000;
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+
 
         /* Animations */
         @keyframes fadeIn {
